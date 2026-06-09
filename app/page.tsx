@@ -30,19 +30,28 @@ const benefits: Benefit[] = [
 export default function Home() {
   return (
     <main className="min-h-screen px-5 py-6 text-white sm:px-8 lg:px-10">
-      <section className="mx-auto grid min-h-[calc(100vh-3rem)] w-full max-w-6xl content-center gap-12 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <section
+        aria-labelledby="homepage-heading"
+        className="mx-auto grid min-h-[calc(100vh-3rem)] w-full max-w-6xl content-center gap-12 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center"
+      >
         <div>
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.24em] text-emerald-glow">
             LifeSpan
           </p>
-          <h1 className="max-w-3xl text-5xl font-semibold leading-[0.95] sm:text-6xl lg:text-7xl">
+          <h1
+            className="max-w-3xl text-5xl font-semibold leading-[0.95] sm:text-6xl lg:text-7xl"
+            id="homepage-heading"
+          >
             Know Your Time
           </h1>
           <p className="mt-6 max-w-xl text-base leading-7 text-white/72 sm:text-lg">
             Every second is a stat. Make it count.
           </p>
 
-          <form className="mt-9 max-w-xl rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-glow backdrop-blur sm:flex sm:items-end sm:gap-3">
+          <form
+            aria-label="Birth date preview form"
+            className="mt-9 max-w-xl rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-glow backdrop-blur sm:flex sm:items-end sm:gap-3"
+          >
             <label className="block flex-1">
               <span className="mb-2 block text-sm font-medium text-white/72">
                 Date of birth
@@ -64,9 +73,12 @@ export default function Home() {
         </div>
 
         <section
-          aria-label="LifeSpan benefits"
+          aria-labelledby="benefits-heading"
           className="grid gap-3 sm:grid-cols-2 lg:gap-4"
         >
+          <h2 className="sr-only" id="benefits-heading">
+            LifeSpan benefits
+          </h2>
           {benefits.map((benefit) => (
             <article
               className="rounded-lg border border-white/10 bg-white/[0.045] p-5 backdrop-blur"
