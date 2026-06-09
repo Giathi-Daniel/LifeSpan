@@ -1,33 +1,120 @@
-type Benefit = {
-  title: string;
+"use client";
+
+import { useMemo, useState } from "react";
+import {
+  calculateAge,
+  calculateDaysAlive,
+  calculateHoursAlive,
+  calculateMonthsAlive,
+  calculateWeeksAlive,
+} from "@/lib/age";
+
+type AgeSnapshot =
+  | {
+      isValid: true;
+      years: number;
+      months: number;
+      days: number;
+      totalDays: number;
+      totalWeeks: number;
+      totalMonths: number;
+      totalHours: number;
+    }
+  | {
+      isValid: false;
+      message: string;
+    };
+
+type ResultMetric = {
+  label: string;
   value: string;
-  description: string;
 };
 
-const benefits: Benefit[] = [
-  {
-    title: "Exact age",
-    value: "29y 4m 12d",
-    description: "A precise snapshot of elapsed time.",
-  },
-  {
-    title: "Life progress",
-    value: "36.8%",
-    description: "A clear view of your long-term timeline.",
-  },
-  {
-    title: "Milestones",
-    value: "8 tracked",
-    description: "Key moments surfaced at a glance.",
-  },
-  {
-    title: "Birthday countdown",
-    value: "142 days",
-    description: "Know what is coming next.",
-  },
+const emptyMetrics: ResultMetric[] = [
+  { label: "Years", value: "-" },
+  { label: "Months", value: "-" },
+  { label: "Days", value: "-" },
+  { label: "Total days", value: "-" },
+  { label: "Total weeks", value: "-" },
+  { label: "Total months", value: "-" },
+  { label: "Total hours", value: "-" },
 ];
 
+function getTodayDateInputValue(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getAgeSnapshot(birthDate: string): AgeSnapshot | null {
+  if (!birthDate) {
+    return null;
+  }
+
+  const age = calculateAge(birthDate);
+  const daysAlive = calculateDaysAlive(birthDate);
+  const weeksAlive = calculateWeeksAlive(birthDate);
+  const monthsAlive = calculateMonthsAlive(birthDate);
+  const hoursAlive = calculateHoursAlive(birthDate);
+
+  if (!age.isValid) {
+    return {
+      isValid: false,
+      message: age.message,
+    };
+  }
+
+  if (
+    !daysAlive.isValid ||
+    !weeksAlive.isValid ||
+    !monthsAlive.isValid ||
+    !hoursAlive.isValid
+  ) {
+    return {
+      isValid: false,
+      message: "Unable to calculate age from the selected date.",
+    };
+  }
+
+  return {
+    isValid: true,
+    years: age.years,
+    months: age.months,
+    days: age.days,
+    totalDays: daysAlive.daysAlive,
+    totalWeeks: weeksAlive.weeksAlive,
+    totalMonths: monthsAlive.monthsAlive,
+    totalHours: hoursAlive.hoursAlive,
+  };
+}
+
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat("en-US").format(value);
+}
+
+function getResultMetrics(snapshot: AgeSnapshot | null): ResultMetric[] {
+  if (!snapshot || !snapshot.isValid) {
+    return emptyMetrics;
+  }
+
+  return [
+    { label: "Years", value: formatNumber(snapshot.years) },
+    { label: "Months", value: formatNumber(snapshot.months) },
+    { label: "Days", value: formatNumber(snapshot.days) },
+    { label: "Total days", value: formatNumber(snapshot.totalDays) },
+    { label: "Total weeks", value: formatNumber(snapshot.totalWeeks) },
+    { label: "Total months", value: formatNumber(snapshot.totalMonths) },
+    { label: "Total hours", value: formatNumber(snapshot.totalHours) },
+  ];
+}
+
 export default function Home() {
+  const [birthDate, setBirthDate] = useState("");
+  const today = useMemo(() => getTodayDateInputValue(), []);
+  const ageSnapshot = useMemo(() => getAgeSnapshot(birthDate), [birthDate]);
+  const resultMetrics = useMemo(
+    () => getResultMetrics(ageSnapshot),
+    [ageSnapshot],
+  );
+
   return (
     <main className="min-h-screen px-5 py-6 text-white sm:px-8 lg:px-10">
       <section
@@ -49,47 +136,55 @@ export default function Home() {
           </p>
 
           <form
-            aria-label="Birth date preview form"
+            aria-label="Birth date calculation form"
             className="mt-9 max-w-xl rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-glow backdrop-blur sm:flex sm:items-end sm:gap-3"
+            onSubmit={(event) => event.preventDefault()}
           >
             <label className="block flex-1">
               <span className="mb-2 block text-sm font-medium text-white/72">
                 Date of birth
               </span>
               <input
+                aria-describedby="birth-date-error"
                 aria-label="Date of birth"
                 className="h-12 w-full rounded-md border border-white/12 bg-midnight-soft px-4 text-base text-white outline-none transition placeholder:text-white/36 focus:border-emerald-bright focus:ring-2 focus:ring-emerald-bright/25"
+                max={today}
                 name="birthDate"
+                onChange={(event) => setBirthDate(event.target.value)}
                 type="date"
+                value={birthDate}
               />
             </label>
             <button
               className="mt-3 h-12 w-full rounded-md bg-emerald-bright px-5 text-sm font-semibold text-[#04111f] transition hover:bg-emerald-glow focus:outline-none focus:ring-2 focus:ring-emerald-glow focus:ring-offset-2 focus:ring-offset-midnight sm:mt-0 sm:w-auto"
-              type="button"
+              type="submit"
             >
               Calculate
             </button>
           </form>
+
+          {ageSnapshot && !ageSnapshot.isValid ? (
+            <p className="mt-3 text-sm leading-6 text-emerald-glow" id="birth-date-error">
+              {ageSnapshot.message}
+            </p>
+          ) : null}
         </div>
 
         <section
-          aria-labelledby="benefits-heading"
+          aria-labelledby="results-heading"
           className="grid gap-3 sm:grid-cols-2 lg:gap-4"
         >
-          <h2 className="sr-only" id="benefits-heading">
-            LifeSpan benefits
+          <h2 className="sr-only" id="results-heading">
+            Age calculation results
           </h2>
-          {benefits.map((benefit) => (
+          {resultMetrics.map((metric) => (
             <article
               className="rounded-lg border border-white/10 bg-white/[0.045] p-5 backdrop-blur"
-              key={benefit.title}
+              key={metric.label}
             >
-              <p className="text-sm font-medium text-white/60">{benefit.title}</p>
+              <p className="text-sm font-medium text-white/60">{metric.label}</p>
               <p className="mt-3 text-3xl font-semibold tracking-normal text-white">
-                {benefit.value}
-              </p>
-              <p className="mt-3 text-sm leading-6 text-white/60">
-                {benefit.description}
+                {metric.value}
               </p>
             </article>
           ))}
