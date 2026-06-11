@@ -8,6 +8,7 @@ import {
   calculateMonthsAlive,
   calculateWeeksAlive,
 } from "@/lib/age";
+import { LifeProgress } from "@/components/life-progress";
 import { StatCard } from "@/components/stat-card";
 
 type AgeSnapshot =
@@ -32,7 +33,14 @@ type ResultMetric = {
   command: string;
 };
 
+type ProgressSnapshot = {
+  percentageComplete: number;
+  percentageRemaining: number;
+};
+
 const navigationItems = ["Timeline", "Age Engine", "Milestones", "Progress"];
+const benchmarkLifespanYears = 80;
+const averageDaysPerYear = 365.2425;
 
 const moduleItems = [
   "exact-age",
@@ -146,12 +154,36 @@ function getResultMetrics(snapshot: AgeSnapshot | null): ResultMetric[] {
   ];
 }
 
+function getLifeProgress(snapshot: AgeSnapshot | null): ProgressSnapshot {
+  if (!snapshot || !snapshot.isValid) {
+    return {
+      percentageComplete: 0,
+      percentageRemaining: 0,
+    };
+  }
+
+  const benchmarkDays = benchmarkLifespanYears * averageDaysPerYear;
+  const percentageComplete = Math.min(
+    (snapshot.totalDays / benchmarkDays) * 100,
+    100,
+  );
+
+  return {
+    percentageComplete,
+    percentageRemaining: Math.max(100 - percentageComplete, 0),
+  };
+}
+
 export default function Home() {
   const [birthDate, setBirthDate] = useState("");
   const today = useMemo(() => getTodayDateInputValue(), []);
   const ageSnapshot = useMemo(() => getAgeSnapshot(birthDate), [birthDate]);
   const resultMetrics = useMemo(
     () => getResultMetrics(ageSnapshot),
+    [ageSnapshot],
+  );
+  const lifeProgress = useMemo(
+    () => getLifeProgress(ageSnapshot),
     [ageSnapshot],
   );
   const hasValidResult = ageSnapshot?.isValid === true;
@@ -348,6 +380,14 @@ export default function Home() {
                 isActive={hasValidResult}
                 label="Hours alive"
                 targetValue={ageSnapshot?.isValid ? ageSnapshot.totalHours : 0}
+              />
+            </div>
+
+            <div className="mt-3">
+              <LifeProgress
+                isActive={hasValidResult}
+                percentageComplete={lifeProgress.percentageComplete}
+                percentageRemaining={lifeProgress.percentageRemaining}
               />
             </div>
 
