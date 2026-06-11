@@ -8,6 +8,7 @@ import {
   calculateMonthsAlive,
   calculateWeeksAlive,
 } from "@/lib/age";
+import { BirthdayCountdown } from "@/components/birthday-countdown";
 import { LifeProgress } from "@/components/life-progress";
 import { MilestoneTimeline } from "@/components/milestone-timeline";
 import { StatCard } from "@/components/stat-card";
@@ -50,6 +51,7 @@ const moduleItems = [
   "months-alive",
   "hours-alive",
   "milestone-timeline",
+  "birthday-countdown",
 ];
 
 const emptyMetrics: ResultMetric[] = [
@@ -391,6 +393,10 @@ export default function Home() {
                 percentageComplete={lifeProgress.percentageComplete}
                 percentageRemaining={lifeProgress.percentageRemaining}
               />
+            </div>
+
+            <div className="mt-3">
+              <BirthdayCountdown birthDate={birthDate} />
             </div>
 
             <div className="mt-3">

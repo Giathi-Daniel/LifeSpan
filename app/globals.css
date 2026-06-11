@@ -94,6 +94,18 @@ select {
   background-color: #08111c;
 }
 
+.birthday-countdown-panel {
+  animation: terminal-in 420ms ease-out both;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.birthday-countdown-panel:hover {
+  border-color: rgba(16, 185, 129, 0.34);
+  background-color: #08111c;
+}
+
 .terminal-panel article {
   transition:
     background-color 160ms ease,
