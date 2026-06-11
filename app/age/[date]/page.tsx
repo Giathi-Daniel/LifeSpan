@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { BirthdayCountdown } from "@/components/birthday-countdown";
 import { LifeProgress } from "@/components/life-progress";
 import { MilestoneTimeline } from "@/components/milestone-timeline";
+import { ShareActions } from "@/components/share-actions";
 import { StatCard } from "@/components/stat-card";
 import {
   calculateAge,
@@ -12,6 +13,7 @@ import {
   calculateWeeksAlive,
 } from "@/lib/age";
 import { calculateFunFacts } from "@/lib/facts";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site";
 
 type AgePageProps = {
   params: Promise<{
@@ -50,10 +52,14 @@ export async function generateMetadata({
 }: AgePageProps): Promise<Metadata> {
   const { date } = await params;
   const snapshot = getAgeSnapshot(date);
+  const canonicalUrl = getAbsoluteUrl(`/age/${date}`);
 
   if (!snapshot) {
     return {
       title: "Invalid Age Page | LifeSpan",
+      alternates: {
+        canonical: canonicalUrl,
+      },
       robots: {
         index: false,
         follow: false,
@@ -64,10 +70,29 @@ export async function generateMetadata({
   return {
     title: `${snapshot.years} Years Old | LifeSpan`,
     description: `Explore age stats for ${date}: exact age, days alive, hours alive, life progress, milestones, birthday countdown, and fun facts.`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: `${snapshot.years} Years Old | LifeSpan`,
       description: `Shareable LifeSpan age page for ${date}.`,
+      url: canonicalUrl,
+      siteName: siteConfig.name,
+      images: [
+        {
+          url: `${canonicalUrl}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: `LifeSpan age stats for ${date}`,
+        },
+      ],
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${snapshot.years} Years Old | LifeSpan`,
+      description: `Shareable LifeSpan age page for ${date}.`,
+      images: [`${canonicalUrl}/opengraph-image`],
     },
   };
 }
@@ -153,6 +178,10 @@ export default async function AgePage({ params }: AgePageProps) {
 
           <div className="mt-3">
             <BirthdayCountdown birthDate={date} />
+          </div>
+
+          <div className="mt-3">
+            <ShareActions path={`/age/${date}`} />
           </div>
 
           <div className="mt-3">

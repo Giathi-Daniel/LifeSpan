@@ -11,6 +11,7 @@ import {
 import { BirthdayCountdown } from "@/components/birthday-countdown";
 import { LifeProgress } from "@/components/life-progress";
 import { MilestoneTimeline } from "@/components/milestone-timeline";
+import { ShareActions } from "@/components/share-actions";
 import { StatCard } from "@/components/stat-card";
 
 type AgeSnapshot =
@@ -397,6 +398,13 @@ export default function Home() {
 
             <div className="mt-3">
               <BirthdayCountdown birthDate={birthDate} />
+            </div>
+
+            <div className="mt-3">
+              <ShareActions
+                disabled={!hasValidResult}
+                path={hasValidResult ? `/age/${birthDate}` : "/"}
+              />
             </div>
 
             <div className="mt-3">
