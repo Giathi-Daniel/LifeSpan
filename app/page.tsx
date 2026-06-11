@@ -9,6 +9,7 @@ import {
   calculateWeeksAlive,
 } from "@/lib/age";
 import { LifeProgress } from "@/components/life-progress";
+import { MilestoneTimeline } from "@/components/milestone-timeline";
 import { StatCard } from "@/components/stat-card";
 
 type AgeSnapshot =
@@ -48,6 +49,7 @@ const moduleItems = [
   "weeks-alive",
   "months-alive",
   "hours-alive",
+  "milestone-timeline",
 ];
 
 const emptyMetrics: ResultMetric[] = [
@@ -389,6 +391,10 @@ export default function Home() {
                 percentageComplete={lifeProgress.percentageComplete}
                 percentageRemaining={lifeProgress.percentageRemaining}
               />
+            </div>
+
+            <div className="mt-3">
+              <MilestoneTimeline birthDate={birthDate} />
             </div>
 
             <div className="terminal-panel mt-6 overflow-hidden rounded-md border border-white/12 bg-black shadow-[0_0_32px_rgba(47,125,246,0.12)]">

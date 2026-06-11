@@ -82,6 +82,18 @@ select {
   background-color: #08111c;
 }
 
+.milestone-panel {
+  animation: terminal-in 420ms ease-out both;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.milestone-panel:hover {
+  border-color: rgba(47, 125, 246, 0.36);
+  background-color: #08111c;
+}
+
 .terminal-panel article {
   transition:
     background-color 160ms ease,
