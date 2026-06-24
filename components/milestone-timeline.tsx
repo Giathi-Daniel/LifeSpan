@@ -5,42 +5,42 @@ type MilestoneTimelineProps = {
 };
 
 const statusClassNames: Record<MilestoneStatus, string> = {
-  Passed: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
-  Upcoming: "border-indigo-500/30 bg-indigo-500/10 text-indigo-400",
-  Future: "border-slate-600/30 bg-slate-600/10 text-slate-400",
+  Passed: "border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+  Upcoming: "border-indigo-200 dark:border-indigo-500/30 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400",
+  Future: "border-gray-200 dark:border-slate-600/30 bg-gray-50 dark:bg-slate-600/10 text-gray-500 dark:text-slate-400",
 };
 
 const markerClassNames: Record<MilestoneStatus, string> = {
-  Passed: "bg-emerald-500 shadow-lg shadow-emerald-500/30",
-  Upcoming: "bg-indigo-500 shadow-lg shadow-indigo-500/30",
-  Future: "bg-slate-500",
+  Passed: "bg-emerald-500",
+  Upcoming: "bg-indigo-500",
+  Future: "bg-gray-300 dark:bg-slate-500",
 };
 
 export function MilestoneTimeline({ birthDate }: MilestoneTimelineProps) {
   const milestoneResult = birthDate ? calculateMilestones(birthDate) : null;
 
   return (
-    <section className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
+    <section className="card-enter rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-900/30 p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h3 className="text-xl font-semibold text-white">Milestone Timeline</h3>
-          <p className="mt-2 text-sm text-slate-400">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Milestone Timeline</h3>
+          <p className="mt-2 text-sm text-gray-500 dark:text-slate-400">
             Major life milestones and their significance
           </p>
         </div>
-        <span className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 font-mono text-sm font-medium text-indigo-300">
+        <span className="rounded-lg border border-indigo-200 dark:border-indigo-500/30 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-2 font-mono text-sm font-medium text-indigo-700 dark:text-indigo-300">
           {milestoneResult?.isValid ? milestoneResult.referenceDate : "Select date"}
         </span>
       </div>
 
       {!milestoneResult ? (
-        <p className="rounded-lg border border-slate-700/30 bg-slate-800/20 px-4 py-3 text-sm text-slate-300">
+        <p className="rounded-lg border border-gray-200 dark:border-slate-700/30 bg-white dark:bg-slate-800/20 px-4 py-3 text-sm text-gray-500 dark:text-slate-300">
           Select a date of birth to generate your milestone timeline.
         </p>
       ) : null}
 
       {milestoneResult && !milestoneResult.isValid ? (
-        <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <p className="rounded-lg border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-400" role="alert">
           {milestoneResult.message}
         </p>
       ) : null}
@@ -49,7 +49,7 @@ export function MilestoneTimeline({ birthDate }: MilestoneTimelineProps) {
         <ol className="grid gap-4 md:grid-cols-2">
           {milestoneResult.milestones.map((milestone) => (
             <li
-              className="flex items-center gap-4 rounded-xl border border-slate-700/30 bg-slate-800/20 p-4 transition-all hover:bg-slate-800/40"
+              className="flex items-center gap-4 rounded-xl border border-gray-200 dark:border-slate-700/30 bg-white dark:bg-slate-800/20 p-4 transition-all hover:border-indigo-200 dark:hover:bg-slate-800/40"
               key={milestone.age}
             >
               <span
@@ -58,7 +58,7 @@ export function MilestoneTimeline({ birthDate }: MilestoneTimelineProps) {
               />
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-mono text-2xl font-bold text-white">
+                  <p className="font-mono text-2xl font-bold text-gray-900 dark:text-white">
                     {milestone.age}
                   </p>
                   <span
@@ -67,10 +67,10 @@ export function MilestoneTimeline({ birthDate }: MilestoneTimelineProps) {
                     {milestone.status}
                   </span>
                 </div>
-                <p className="mt-2 text-sm font-medium text-slate-400">
+                <p className="mt-2 text-sm font-medium text-gray-500 dark:text-slate-400">
                   Date reached
                 </p>
-                <p className="mt-1 font-mono text-base text-emerald-400">
+                <p className="mt-1 font-mono text-base text-indigo-600 dark:text-emerald-400">
                   {formatDisplayDate(milestone.dateReached)}
                 </p>
               </div>

@@ -58,19 +58,19 @@ export function StatCard({
   }, [isActive, targetValue]);
 
   return (
-    <article className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
-      <p className="text-sm font-medium text-slate-400">{label}</p>
+    <article className="card-enter rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-900/30 p-6">
+      <p className="text-sm font-medium text-gray-500 dark:text-slate-400">{label}</p>
       <div className="mt-2">
         <p
           aria-live="polite"
-          className="font-mono text-4xl font-bold leading-none text-emerald-400 sm:text-5xl"
+          className="font-mono text-4xl font-bold leading-none text-indigo-600 dark:text-emerald-400 sm:text-5xl"
         >
           {isActive ? numberFormatter.format(displayValue) : "-"}
           {isActive && suffix ? (
-            <span className="ml-2 text-lg text-slate-400">{suffix}</span>
+            <span className="ml-2 text-lg text-gray-400 dark:text-slate-400">{suffix}</span>
           ) : null}
         </p>
-        <p className="mt-3 text-sm text-slate-300">{detail}</p>
+        <p className="mt-3 text-sm text-gray-500 dark:text-slate-300">{detail}</p>
       </div>
     </article>
   );

@@ -102,16 +102,16 @@ export default async function AgePage({ params }: AgePageProps) {
   const lifeProgress = getLifeProgress(snapshot);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950">
+    <main className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-12">
-          <p className="text-sm font-medium uppercase tracking-wider text-indigo-400">
+          <p className="text-sm font-medium uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
             Shareable age page
           </p>
-          <h1 className="mt-2 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+          <h1 className="mt-2 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
             Age stats for {date}
           </h1>
-          <p className="mt-4 max-w-3xl text-lg text-slate-300">
+          <p className="mt-4 max-w-3xl text-lg text-gray-500 dark:text-slate-300">
             A public LifeSpan snapshot with exact age, life progress, birthday
             countdown, milestones, and estimated fun facts.
           </p>
@@ -152,16 +152,16 @@ export default async function AgePage({ params }: AgePageProps) {
 
           <ShareActions path={`/age/${date}`} />
 
-          <div className="rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Fun Facts</h2>
+          <div className="rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-900/30 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Fun Facts</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {funFacts.map((fact) => (
                 <div
                   key={fact.label}
-                  className="rounded-xl border border-slate-700/30 bg-slate-800/20 p-4"
+                  className="rounded-xl border border-gray-200 dark:border-slate-700/30 bg-white dark:bg-slate-800/20 p-4"
                 >
-                  <p className="text-sm text-slate-400">{fact.label}</p>
-                  <p className="mt-1 font-mono text-2xl font-bold text-emerald-400">
+                  <p className="text-sm text-gray-500 dark:text-slate-400">{fact.label}</p>
+                  <p className="mt-1 font-mono text-2xl font-bold text-indigo-600 dark:text-emerald-400">
                     {fact.value}
                   </p>
                 </div>

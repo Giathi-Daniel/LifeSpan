@@ -45,11 +45,11 @@ export function ShareActions({ path, disabled = false }: ShareActionsProps) {
   }
 
   return (
-    <section className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
+    <section className="card-enter rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-900/30 p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-xl font-semibold text-white">Share Results</h3>
-          <p className="mt-2 break-all text-sm text-slate-300">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Share Results</h3>
+          <p className="mt-2 break-all text-sm text-gray-500 dark:text-slate-300">
             {disabled
               ? "Select a valid date to create a share URL."
               : shareUrl}
@@ -65,12 +65,12 @@ export function ShareActions({ path, disabled = false }: ShareActionsProps) {
         </button>
       </div>
       {shareState === "copied" ? (
-        <p className="mt-4 text-sm text-emerald-400">
+        <p className="mt-4 text-sm text-emerald-600 dark:text-emerald-400">
           Share link ready to copy.
         </p>
       ) : null}
       {shareState === "error" ? (
-        <p className="mt-4 text-sm text-red-400">
+        <p className="mt-4 text-sm text-red-600 dark:text-red-400">
           Unable to share. Copy the URL manually.
         </p>
       ) : null}

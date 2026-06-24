@@ -90,15 +90,15 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
   }, [birthDate]);
 
   return (
-    <section className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
+    <section className="card-enter rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-900/30 p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-xl font-semibold text-white">Birthday Countdown</h3>
-          <p className="mt-2 text-sm text-slate-400">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Birthday Countdown</h3>
+          <p className="mt-2 text-sm text-gray-500 dark:text-slate-400">
             Time until your next birthday
           </p>
         </div>
-        <span className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 font-mono text-sm font-medium text-indigo-300">
+        <span className="rounded-lg border border-indigo-200 dark:border-indigo-500/30 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-2 font-mono text-sm font-medium text-indigo-700 dark:text-indigo-300">
           {countdownState.status === "ready"
             ? countdownState.value.nextBirthday
             : "Select date"}
@@ -106,13 +106,13 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
       </div>
 
       {countdownState.status === "idle" ? (
-        <p className="mt-6 rounded-lg border border-slate-700/30 bg-slate-800/20 px-4 py-3 text-sm text-slate-300">
+        <p className="mt-6 rounded-lg border border-gray-200 dark:border-slate-700/30 bg-white dark:bg-slate-800/20 px-4 py-3 text-sm text-gray-500 dark:text-slate-300">
           Select a date of birth to start the live countdown.
         </p>
       ) : null}
 
       {countdownState.status === "error" ? (
-        <p className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <p className="mt-6 rounded-lg border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-400" role="alert">
           {countdownState.message}
         </p>
       ) : null}
@@ -122,17 +122,11 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
             <CountdownUnit label="Days" value={countdownState.value.days} />
             <CountdownUnit label="Hours" value={countdownState.value.hours} />
-            <CountdownUnit
-              label="Minutes"
-              value={countdownState.value.minutes}
-            />
-            <CountdownUnit
-              label="Seconds"
-              value={countdownState.value.seconds}
-            />
+            <CountdownUnit label="Minutes" value={countdownState.value.minutes} />
+            <CountdownUnit label="Seconds" value={countdownState.value.seconds} />
           </div>
           {countdownState.value.usesLeapDayFallback ? (
-            <p className="mt-4 text-sm text-slate-300">
+            <p className="mt-4 text-sm text-gray-500 dark:text-slate-300">
               Leap-day birthday detected. Countdown uses Mar 1 in non-leap years.
             </p>
           ) : null}
@@ -144,11 +138,11 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
 
 function CountdownUnit({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-xl border border-slate-700/30 bg-slate-800/20 p-4 text-center">
-      <p className="font-mono text-3xl font-bold leading-none text-emerald-400">
+    <div className="rounded-xl border border-gray-200 dark:border-slate-700/30 bg-white dark:bg-slate-800/20 p-4 text-center">
+      <p className="font-mono text-3xl font-bold leading-none text-indigo-600 dark:text-emerald-400">
         {value.toString().padStart(2, "0")}
       </p>
-      <p className="mt-2 text-xs font-medium text-slate-400 uppercase tracking-wider">
+      <p className="mt-2 text-xs font-medium text-gray-400 dark:text-slate-400 uppercase tracking-wider">
         {label}
       </p>
     </div>

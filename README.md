@@ -4,6 +4,8 @@
 
 ---
 
+![preview](./images/preview.png)
+
 ## The Challenge It Solves
 
 People Google "how many days have I been alive" and "what day was I born" millions of times a month. Every result that ranks is a 2009-era tool with ads, low contrast, no mobile layout, and zero personality. LifeSpan is the answer those searches deserve — production-quality, instantly shareable, and genuinely useful beyond a single number.

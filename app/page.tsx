@@ -11,6 +11,7 @@ import {
 import { BirthdayCountdown } from "@/components/birthday-countdown";
 import { LifeProgress } from "@/components/life-progress";
 import { MilestoneTimeline } from "@/components/milestone-timeline";
+import { Nav } from "@/components/nav";
 import { ShareActions } from "@/components/share-actions";
 import { StatCard } from "@/components/stat-card";
 
@@ -30,17 +31,8 @@ type AgeSnapshot =
       message: string;
     };
 
-type ResultMetric = {
-  label: string;
-  value: string;
-};
+type ResultMetric = { label: string; value: string };
 
-type ProgressSnapshot = {
-  percentageComplete: number;
-  percentageRemaining: number;
-};
-
-const navigationItems = ["Home", "Timeline", "Milestones", "About"];
 const benchmarkLifespanYears = 80;
 const averageDaysPerYear = 365.2425;
 
@@ -59,9 +51,7 @@ function getTodayDateInputValue(): string {
 }
 
 function getAgeSnapshot(birthDate: string): AgeSnapshot | null {
-  if (!birthDate) {
-    return null;
-  }
+  if (!birthDate) return null;
 
   const age = calculateAge(birthDate);
   const daysAlive = calculateDaysAlive(birthDate);
@@ -69,12 +59,7 @@ function getAgeSnapshot(birthDate: string): AgeSnapshot | null {
   const monthsAlive = calculateMonthsAlive(birthDate);
   const hoursAlive = calculateHoursAlive(birthDate);
 
-  if (!age.isValid) {
-    return {
-      isValid: false,
-      message: age.message,
-    };
-  }
+  if (!age.isValid) return { isValid: false, message: age.message };
 
   if (
     !daysAlive.isValid ||
@@ -82,10 +67,7 @@ function getAgeSnapshot(birthDate: string): AgeSnapshot | null {
     !monthsAlive.isValid ||
     !hoursAlive.isValid
   ) {
-    return {
-      isValid: false,
-      message: "Unable to calculate age from the selected date.",
-    };
+    return { isValid: false, message: "Unable to calculate age from the selected date." };
   }
 
   return {
@@ -105,10 +87,7 @@ function formatNumber(value: number): string {
 }
 
 function getResultMetrics(snapshot: AgeSnapshot | null): ResultMetric[] {
-  if (!snapshot || !snapshot.isValid) {
-    return emptyMetrics;
-  }
-
+  if (!snapshot || !snapshot.isValid) return emptyMetrics;
   return [
     { label: "Years", value: formatNumber(snapshot.years) },
     { label: "Months", value: formatNumber(snapshot.months) },
@@ -120,72 +99,32 @@ function getResultMetrics(snapshot: AgeSnapshot | null): ResultMetric[] {
   ];
 }
 
-function getLifeProgress(snapshot: AgeSnapshot | null): ProgressSnapshot {
-  if (!snapshot || !snapshot.isValid) {
-    return {
-      percentageComplete: 0,
-      percentageRemaining: 0,
-    };
-  }
-
+function getLifeProgress(snapshot: AgeSnapshot | null) {
+  if (!snapshot || !snapshot.isValid) return { percentageComplete: 0, percentageRemaining: 0 };
   const benchmarkDays = benchmarkLifespanYears * averageDaysPerYear;
-  const percentageComplete = Math.min(
-    (snapshot.totalDays / benchmarkDays) * 100,
-    100,
-  );
-
-  return {
-    percentageComplete,
-    percentageRemaining: Math.max(100 - percentageComplete, 0),
-  };
+  const percentageComplete = Math.min((snapshot.totalDays / benchmarkDays) * 100, 100);
+  return { percentageComplete, percentageRemaining: Math.max(100 - percentageComplete, 0) };
 }
 
 export default function Home() {
   const [birthDate, setBirthDate] = useState("");
   const today = useMemo(() => getTodayDateInputValue(), []);
   const ageSnapshot = useMemo(() => getAgeSnapshot(birthDate), [birthDate]);
-  const resultMetrics = useMemo(
-    () => getResultMetrics(ageSnapshot),
-    [ageSnapshot],
-  );
-  const lifeProgress = useMemo(
-    () => getLifeProgress(ageSnapshot),
-    [ageSnapshot],
-  );
+  const resultMetrics = useMemo(() => getResultMetrics(ageSnapshot), [ageSnapshot]);
+  const lifeProgress = useMemo(() => getLifeProgress(ageSnapshot), [ageSnapshot]);
   const hasValidResult = ageSnapshot?.isValid === true;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950">
-      <header className="sticky top-0 z-50 backdrop-blur-sm bg-slate-950/80 border-b border-slate-800">
-        <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">L</span>
-            </div>
-            <span className="text-2xl font-bold text-white">LifeSpan</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
-            {navigationItems.map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-slate-400 hover:text-white transition-colors font-medium"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-        </nav>
-      </header>
+    <main className="min-h-screen bg-white dark:bg-gradient-to-b dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
+      <Nav />
 
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">
             Know Your Time
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Discover your exact age in years, months, days, and beyond. Every second
-            matters.
+          <p className="text-xl text-gray-500 dark:text-slate-400 max-w-2xl mx-auto">
+            Discover your exact age in years, months, days, and beyond. Every second matters.
           </p>
         </div>
 
@@ -193,18 +132,19 @@ export default function Home() {
           <form
             aria-label="Birth date calculation form"
             className="flex flex-col sm:flex-row gap-4"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={(e) => e.preventDefault()}
           >
             <div className="flex-1">
               <label className="block">
                 <span className="sr-only">Date of birth</span>
                 <input
-                  aria-describedby="birth-date-error"
+                  aria-describedby={ageSnapshot && !ageSnapshot.isValid ? "birth-date-error" : undefined}
                   aria-label="Date of birth"
-                  className="w-full h-14 rounded-xl border-2 border-slate-700 bg-slate-900/50 px-5 font-medium text-white placeholder-slate-500 outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
+                  aria-invalid={ageSnapshot && !ageSnapshot.isValid ? true : undefined}
+                  className="w-full h-14 rounded-xl border-2 border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900/50 px-5 font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 outline-none transition-all focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20"
                   max={today}
                   name="birthDate"
-                  onChange={(event) => setBirthDate(event.target.value)}
+                  onChange={(e) => setBirthDate(e.target.value)}
                   type="date"
                   value={birthDate}
                 />
@@ -220,21 +160,18 @@ export default function Home() {
 
           {ageSnapshot && !ageSnapshot.isValid ? (
             <p
-              className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-400"
+              className="mt-4 rounded-lg border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-red-600 dark:text-red-400 text-sm"
               id="birth-date-error"
+              role="alert"
             >
               {ageSnapshot.message}
             </p>
           ) : null}
         </div>
 
-        <div className="grid gap-8 md:grid-cols-3 mb-8">
+        <div className="grid gap-6 md:grid-cols-3 mb-8">
           <StatCard
-            detail={
-              ageSnapshot?.isValid
-                ? `${ageSnapshot.months} months, ${ageSnapshot.days} days`
-                : "Select a date"
-            }
+            detail={ageSnapshot?.isValid ? `${ageSnapshot.months} months, ${ageSnapshot.days} days` : "Select a date"}
             isActive={hasValidResult}
             label="Age"
             suffix="years"
@@ -265,24 +202,18 @@ export default function Home() {
 
           <MilestoneTimeline birthDate={birthDate} />
 
-          {hasValidResult ? (
-            <ShareActions path={`/age/${birthDate}`} />
-          ) : null}
+          {hasValidResult ? <ShareActions path={`/age/${birthDate}`} /> : null}
 
-          <div className="rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">
-              Detailed Statistics
-            </h2>
+          <div className="rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-900/30 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Detailed Statistics</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {resultMetrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-xl border border-slate-700/30 bg-slate-800/20 p-4 transition-all hover:bg-slate-800/40"
+                  className="rounded-xl border border-gray-200 dark:border-slate-700/30 bg-white dark:bg-slate-800/20 p-4 transition-all hover:border-indigo-200 dark:hover:bg-slate-800/40"
                 >
-                  <p className="text-sm text-slate-400">{metric.label}</p>
-                  <p className="mt-1 text-2xl font-bold text-emerald-400">
-                    {metric.value}
-                  </p>
+                  <p className="text-sm text-gray-500 dark:text-slate-400">{metric.label}</p>
+                  <p className="mt-1 text-2xl font-bold text-indigo-600 dark:text-emerald-400">{metric.value}</p>
                 </div>
               ))}
             </div>
