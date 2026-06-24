@@ -37,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="bg-midnight text-white antialiased">{children}</body>
     </html>
   );
 }

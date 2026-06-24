@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 type StatCardProps = {
   label: string;
   targetValue: number;
-  command: string;
   detail: string;
   suffix?: string;
   isActive: boolean;
@@ -16,7 +15,6 @@ const animationDuration = 720;
 export function StatCard({
   label,
   targetValue,
-  command,
   detail,
   suffix = "",
   isActive,
@@ -60,22 +58,19 @@ export function StatCard({
   }, [isActive, targetValue]);
 
   return (
-    <article className="stat-card-reveal rounded-md border border-white/12 bg-[#05080c] p-4 shadow-[0_0_24px_rgba(47,125,246,0.08)]">
-      <p className="font-mono text-xs text-white/42">{command}</p>
-      <div className="mt-4">
-        <p className="text-sm font-semibold text-white/64">{label}</p>
+    <article className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
+      <p className="text-sm font-medium text-slate-400">{label}</p>
+      <div className="mt-2">
         <p
           aria-live="polite"
-          className="mt-2 font-mono text-4xl font-semibold leading-none text-emerald-glow sm:text-5xl"
+          className="font-mono text-4xl font-bold leading-none text-emerald-400 sm:text-5xl"
         >
           {isActive ? numberFormatter.format(displayValue) : "-"}
           {isActive && suffix ? (
-            <span className="ml-2 text-base text-white/52">{suffix}</span>
+            <span className="ml-2 text-lg text-slate-400">{suffix}</span>
           ) : null}
         </p>
-        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#2f7df6]">
-          {detail}
-        </p>
+        <p className="mt-3 text-sm text-slate-300">{detail}</p>
       </div>
     </article>
   );

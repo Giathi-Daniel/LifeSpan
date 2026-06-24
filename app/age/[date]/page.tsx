@@ -31,16 +31,9 @@ type AgeSnapshot = {
   totalHours: number;
 };
 
-type ResultMetric = {
-  label: string;
-  value: string;
-  command: string;
-};
-
 type FunFactMetric = {
   label: string;
   value: string;
-  command: string;
 };
 
 const benchmarkLifespanYears = 80;
@@ -105,143 +98,77 @@ export default async function AgePage({ params }: AgePageProps) {
     notFound();
   }
 
-  const resultMetrics = getResultMetrics(snapshot);
   const funFacts = getFunFactMetrics(date);
   const lifeProgress = getLifeProgress(snapshot);
 
   return (
-    <main className="min-h-screen text-white">
-      <section className="mx-auto w-full max-w-7xl px-5 py-8 sm:px-8 lg:px-10">
-        <div className="border-l-4 border-[#2f7df6] pt-4">
-          <div className="border-t-2 border-[#2f7df6] pl-5 pt-4">
-            <p className="font-mono text-sm font-semibold uppercase tracking-[0.16em] text-[#2f7df6]">
-              Shareable age page
-            </p>
-            <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
-              Age stats for {date}
-            </h1>
-            <p className="mt-4 max-w-3xl text-base leading-7 text-white/68">
-              A public LifeSpan snapshot with exact age, life progress,
-              birthday countdown, milestones, and estimated fun facts.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3 font-mono text-sm font-semibold">
-              <span className="rounded bg-[#281722] px-1.5 py-1 text-[#d86a9f]">
-                date: {date}
-              </span>
-              <span className="rounded bg-[#17201f] px-1.5 py-1 text-emerald-glow">
-                status: valid
-              </span>
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950">
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mb-12">
+          <p className="text-sm font-medium uppercase tracking-wider text-indigo-400">
+            Shareable age page
+          </p>
+          <h1 className="mt-2 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+            Age stats for {date}
+          </h1>
+          <p className="mt-4 max-w-3xl text-lg text-slate-300">
+            A public LifeSpan snapshot with exact age, life progress, birthday
+            countdown, milestones, and estimated fun facts.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3 mb-8">
+          <StatCard
+            detail={`${snapshot.months} months, ${snapshot.days} days`}
+            isActive
+            label="Age"
+            suffix="years"
+            targetValue={snapshot.years}
+          />
+          <StatCard
+            detail="Days alive"
+            isActive
+            label="Days alive"
+            targetValue={snapshot.totalDays}
+          />
+          <StatCard
+            detail="Hours alive"
+            isActive
+            label="Hours alive"
+            targetValue={snapshot.totalHours}
+          />
+        </div>
+
+        <div className="space-y-6">
+          <LifeProgress
+            isActive
+            percentageComplete={lifeProgress.percentageComplete}
+            percentageRemaining={lifeProgress.percentageRemaining}
+          />
+
+          <BirthdayCountdown birthDate={date} />
+
+          <MilestoneTimeline birthDate={date} />
+
+          <ShareActions path={`/age/${date}`} />
+
+          <div className="rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6">
+            <h2 className="text-xl font-semibold text-white mb-4">Fun Facts</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {funFacts.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="rounded-xl border border-slate-700/30 bg-slate-800/20 p-4"
+                >
+                  <p className="text-sm text-slate-400">{fact.label}</p>
+                  <p className="mt-1 font-mono text-2xl font-bold text-emerald-400">
+                    {fact.value}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-
-        <section aria-labelledby="share-results-heading" className="mt-10">
-          <h2
-            className="font-mono text-xl font-semibold text-white"
-            id="share-results-heading"
-          >
-            <span className="text-[#8757ff]">$</span> lifespan_share
-          </h2>
-
-          <div className="mt-6 grid gap-3 md:grid-cols-3">
-            <StatCard
-              command="lifespan age --exact"
-              detail={`${snapshot.months} months, ${snapshot.days} days`}
-              isActive
-              label="Age"
-              suffix="yrs"
-              targetValue={snapshot.years}
-            />
-            <StatCard
-              command="lifespan stats --days"
-              detail="Days alive"
-              isActive
-              label="Days alive"
-              targetValue={snapshot.totalDays}
-            />
-            <StatCard
-              command="lifespan stats --hours"
-              detail="Hours alive"
-              isActive
-              label="Hours alive"
-              targetValue={snapshot.totalHours}
-            />
-          </div>
-
-          <div className="mt-3">
-            <LifeProgress
-              isActive
-              percentageComplete={lifeProgress.percentageComplete}
-              percentageRemaining={lifeProgress.percentageRemaining}
-            />
-          </div>
-
-          <div className="mt-3">
-            <BirthdayCountdown birthDate={date} />
-          </div>
-
-          <div className="mt-3">
-            <ShareActions path={`/age/${date}`} />
-          </div>
-
-          <div className="mt-3">
-            <MilestoneTimeline birthDate={date} />
-          </div>
-
-          <div className="terminal-panel mt-6 overflow-hidden rounded-md border border-white/12 bg-black shadow-[0_0_32px_rgba(47,125,246,0.12)]">
-            <div className="border-b border-white/10 bg-white/[0.04] px-4 py-3 font-mono text-xs text-white/50">
-              root@lifespan:~# calculate --date {date}
-            </div>
-            <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-              {resultMetrics.map((metric) => (
-                <article className="bg-[#05080c] p-4" key={metric.label}>
-                  <p className="font-mono text-xs text-white/42">
-                    {metric.command}
-                  </p>
-                  <div className="mt-3 flex items-baseline justify-between gap-3">
-                    <p className="text-sm font-semibold text-white/72">
-                      {metric.label}
-                    </p>
-                    <p className="font-mono text-2xl font-semibold text-emerald-glow">
-                      {metric.value}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <section
-            aria-labelledby="fun-facts-heading"
-            className="terminal-panel mt-6 overflow-hidden rounded-md border border-white/12 bg-black shadow-[0_0_32px_rgba(47,125,246,0.12)]"
-          >
-            <div className="border-b border-white/10 bg-white/[0.04] px-4 py-3">
-              <h2
-                className="font-mono text-sm font-semibold text-white/72"
-                id="fun-facts-heading"
-              >
-                root@lifespan:~# facts --date {date}
-              </h2>
-            </div>
-            <div className="grid gap-px bg-white/10 sm:grid-cols-2">
-              {funFacts.map((fact) => (
-                <article className="bg-[#05080c] p-4" key={fact.label}>
-                  <p className="font-mono text-xs text-white/42">
-                    {fact.command}
-                  </p>
-                  <div className="mt-3 flex items-baseline justify-between gap-3">
-                    <p className="text-sm font-semibold text-white/72">
-                      {fact.label}
-                    </p>
-                    <p className="text-right font-mono text-xl font-semibold text-emerald-glow">
-                      {fact.value}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        </section>
       </section>
     </main>
   );
@@ -279,46 +206,6 @@ function getAgeSnapshot(date: string): AgeSnapshot | null {
   };
 }
 
-function getResultMetrics(snapshot: AgeSnapshot): ResultMetric[] {
-  return [
-    {
-      label: "Years",
-      value: formatNumber(snapshot.years),
-      command: "lifespan age --years",
-    },
-    {
-      label: "Months",
-      value: formatNumber(snapshot.months),
-      command: "lifespan age --months",
-    },
-    {
-      label: "Days",
-      value: formatNumber(snapshot.days),
-      command: "lifespan age --days",
-    },
-    {
-      label: "Total days",
-      value: formatNumber(snapshot.totalDays),
-      command: "lifespan stats --days",
-    },
-    {
-      label: "Total weeks",
-      value: formatNumber(snapshot.totalWeeks),
-      command: "lifespan stats --weeks",
-    },
-    {
-      label: "Total months",
-      value: formatNumber(snapshot.totalMonths),
-      command: "lifespan stats --months",
-    },
-    {
-      label: "Total hours",
-      value: formatNumber(snapshot.totalHours),
-      command: "lifespan stats --hours",
-    },
-  ];
-}
-
 function getFunFactMetrics(date: string): FunFactMetric[] {
   const facts = calculateFunFacts(date);
 
@@ -330,22 +217,18 @@ function getFunFactMetrics(date: string): FunFactMetric[] {
     {
       label: "Estimated heartbeats",
       value: formatNumber(facts.estimatedHeartbeats),
-      command: "lifespan facts --heartbeats",
     },
     {
       label: "Estimated breaths",
       value: formatNumber(facts.estimatedBreaths),
-      command: "lifespan facts --breaths",
     },
     {
       label: "Estimated sleep hours",
       value: formatNumber(facts.estimatedSleepHours),
-      command: "lifespan facts --sleep",
     },
     {
       label: "Birth weekday",
       value: facts.birthWeekday,
-      command: "lifespan facts --weekday",
     },
   ];
 }

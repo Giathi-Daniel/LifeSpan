@@ -8,11 +8,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        midnight: "#061827",
-        "midnight-soft": "#0a2236",
+        midnight: "#0a0a0f",
+        "midnight-soft": "#0e0e15",
         emerald: {
           glow: "#34d399",
           bright: "#10b981",
+        },
+        indigo: {
+          500: "#6366f1",
+          400: "#818cf8",
         },
       },
       fontFamily: {
@@ -26,7 +30,7 @@ const config: Config = {
         ],
       },
       boxShadow: {
-        glow: "0 0 40px rgba(16, 185, 129, 0.18)",
+        glow: "0 0 40px rgba(99, 102, 241, 0.2)",
       },
     },
   },

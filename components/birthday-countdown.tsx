@@ -90,44 +90,36 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
   }, [birthDate]);
 
   return (
-    <section
-      aria-labelledby="birthday-countdown-heading"
-      className="birthday-countdown-panel rounded-md border border-white/12 bg-[#05080c] p-4 shadow-[0_0_28px_rgba(47,125,246,0.08)]"
-    >
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+    <section className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="font-mono text-xs text-white/42">
-            lifespan birthday --countdown live
+          <h3 className="text-xl font-semibold text-white">Birthday Countdown</h3>
+          <p className="mt-2 text-sm text-slate-400">
+            Time until your next birthday
           </p>
-          <h3
-            className="mt-3 text-lg font-semibold text-white"
-            id="birthday-countdown-heading"
-          >
-            Birthday Countdown
-          </h3>
         </div>
-        <span className="w-fit rounded-sm border border-[#2f7df6]/40 bg-[#2f7df6]/10 px-2.5 py-1 font-mono text-xs font-semibold text-[#78aaff]">
+        <span className="rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 font-mono text-sm font-medium text-indigo-300">
           {countdownState.status === "ready"
             ? countdownState.value.nextBirthday
-            : "pending"}
+            : "Select date"}
         </span>
       </div>
 
       {countdownState.status === "idle" ? (
-        <p className="mt-5 rounded-sm border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/58">
+        <p className="mt-6 rounded-lg border border-slate-700/30 bg-slate-800/20 px-4 py-3 text-sm text-slate-300">
           Select a date of birth to start the live countdown.
         </p>
       ) : null}
 
       {countdownState.status === "error" ? (
-        <p className="mt-5 rounded-sm border border-[#d86a9f]/30 bg-[#281722] px-4 py-3 font-mono text-sm text-[#d86a9f]">
-          error: {countdownState.message}
+        <p className="mt-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          {countdownState.message}
         </p>
       ) : null}
 
       {countdownState.status === "ready" ? (
         <>
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
             <CountdownUnit label="Days" value={countdownState.value.days} />
             <CountdownUnit label="Hours" value={countdownState.value.hours} />
             <CountdownUnit
@@ -140,9 +132,8 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
             />
           </div>
           {countdownState.value.usesLeapDayFallback ? (
-            <p className="mt-4 text-sm leading-6 text-white/58">
-              Leap-day birthday detected. Countdown uses Mar 1 in non-leap
-              years.
+            <p className="mt-4 text-sm text-slate-300">
+              Leap-day birthday detected. Countdown uses Mar 1 in non-leap years.
             </p>
           ) : null}
         </>
@@ -153,11 +144,11 @@ export function BirthdayCountdown({ birthDate }: BirthdayCountdownProps) {
 
 function CountdownUnit({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-sm border border-white/10 bg-[#080d14] p-4">
-      <p className="font-mono text-3xl font-semibold leading-none text-emerald-glow">
+    <div className="rounded-xl border border-slate-700/30 bg-slate-800/20 p-4 text-center">
+      <p className="font-mono text-3xl font-bold leading-none text-emerald-400">
         {value.toString().padStart(2, "0")}
       </p>
-      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-white/48">
+      <p className="mt-2 text-xs font-medium text-slate-400 uppercase tracking-wider">
         {label}
       </p>
     </div>

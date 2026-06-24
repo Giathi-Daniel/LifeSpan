@@ -45,27 +45,18 @@ export function ShareActions({ path, disabled = false }: ShareActionsProps) {
   }
 
   return (
-    <section
-      aria-labelledby="share-actions-heading"
-      className="share-actions-panel rounded-md border border-white/12 bg-[#05080c] p-4 shadow-[0_0_28px_rgba(47,125,246,0.08)]"
-    >
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className="card-enter rounded-2xl border border-slate-700/50 bg-slate-900/30 p-6 transition-all hover:bg-slate-800/40">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="font-mono text-xs text-white/42">
-            lifespan share --public-url
-          </p>
-          <h3
-            className="mt-3 text-lg font-semibold text-white"
-            id="share-actions-heading"
-          >
-            Share this age page
-          </h3>
-          <p className="mt-2 break-all font-mono text-sm text-white/58">
-            {disabled ? "Select a valid date to create a share URL." : shareUrl}
+          <h3 className="text-xl font-semibold text-white">Share Results</h3>
+          <p className="mt-2 break-all text-sm text-slate-300">
+            {disabled
+              ? "Select a valid date to create a share URL."
+              : shareUrl}
           </p>
         </div>
         <button
-          className="h-12 rounded-sm bg-[#2f7df6] px-5 text-sm font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#5a98ff] disabled:cursor-not-allowed disabled:bg-white/12 disabled:text-white/42"
+          className="h-12 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-8 text-sm font-semibold text-white transition-all hover:from-indigo-500 hover:to-indigo-400 hover:scale-105 disabled:cursor-not-allowed disabled:from-slate-600 disabled:to-slate-500"
           disabled={disabled || shareState === "copying"}
           onClick={handleShare}
           type="button"
@@ -74,12 +65,12 @@ export function ShareActions({ path, disabled = false }: ShareActionsProps) {
         </button>
       </div>
       {shareState === "copied" ? (
-        <p className="mt-3 font-mono text-sm text-emerald-glow">
-          Share link ready.
+        <p className="mt-4 text-sm text-emerald-400">
+          Share link ready to copy.
         </p>
       ) : null}
       {shareState === "error" ? (
-        <p className="mt-3 font-mono text-sm text-[#d86a9f]">
+        <p className="mt-4 text-sm text-red-400">
           Unable to share. Copy the URL manually.
         </p>
       ) : null}

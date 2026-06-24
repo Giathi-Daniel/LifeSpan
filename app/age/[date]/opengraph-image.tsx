@@ -37,7 +37,7 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
           height: "100%",
           display: "flex",
           background:
-            "linear-gradient(135deg, #05080c 0%, #07111d 48%, #020408 100%)",
+            "linear-gradient(135deg, #0a0a0f 0%, #0e0e15 50%, #08080c 100%)",
           color: "#ffffff",
           fontFamily: "Inter, Arial, sans-serif",
           padding: 56,
@@ -46,35 +46,12 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
       >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(rgba(47,125,246,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(47,125,246,0.08) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: -120,
-            top: -140,
-            width: 430,
-            height: 430,
-            borderRadius: 999,
-            background: "rgba(47,125,246,0.18)",
-            filter: "blur(6px)",
-          }}
-        />
-        <div
-          style={{
             position: "relative",
             zIndex: 1,
             width: "100%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            borderLeft: "6px solid #2f7df6",
-            paddingLeft: 34,
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -82,24 +59,25 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
               <div
                 style={{
                   display: "flex",
-                  width: 132,
-                  border: "3px solid #2f7df6",
-                  color: "#2f7df6",
-                  fontSize: 34,
+                  width: 120,
+                  height: 44,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "linear-gradient(135deg, #6366f1 0%, #818cf8 100%)",
+                  fontSize: 28,
                   fontWeight: 800,
-                  letterSpacing: 5,
-                  padding: "6px 12px",
-                  boxShadow: "0 0 24px rgba(47,125,246,0.32)",
+                  color: "#ffffff",
+                  letterSpacing: 2,
                 }}
               >
-                LIFE
+                LifeSpan
               </div>
               <div
                 style={{
-                  color: "#34d399",
-                  fontSize: 24,
-                  fontWeight: 700,
-                  letterSpacing: 2,
+                  color: "#6366f1",
+                  fontSize: 22,
+                  fontWeight: 600,
+                  letterSpacing: 1,
                   textTransform: "uppercase",
                 }}
               >
@@ -111,12 +89,12 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
                 display: "flex",
                 alignItems: "center",
                 height: 44,
-                border: "1px solid rgba(216,106,159,0.36)",
-                background: "#281722",
-                color: "#d86a9f",
-                fontSize: 24,
+                padding: "0 20px",
+                background: "rgba(99, 102, 241, 0.1)",
+                color: "#818cf8",
+                fontSize: 20,
                 fontFamily: "monospace",
-                padding: "0 14px",
+                border: "1px solid rgba(99, 102, 241, 0.2)",
               }}
             >
               {date}
@@ -139,7 +117,7 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
               style={{
                 margin: 0,
                 maxWidth: 820,
-                color: "rgba(255,255,255,0.72)",
+                color: "rgba(255,255,255,0.7)",
                 fontSize: 28,
                 lineHeight: 1.35,
               }}
@@ -187,16 +165,17 @@ function MetricCard({ label, value }: { label: string; value: string }) {
         display: "flex",
         flexDirection: "column",
         gap: 12,
-        background: "#05080c",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "rgba(17, 17, 25, 0.5)",
+        border: "1px solid rgba(255,255,255,0.1)",
         padding: 24,
+        borderRadius: 12,
       }}
     >
       <div
         style={{
-          color: "rgba(255,255,255,0.54)",
-          fontSize: 20,
-          fontWeight: 700,
+          color: "rgba(255,255,255,0.5)",
+          fontSize: 18,
+          fontWeight: 600,
         }}
       >
         {label}
@@ -204,8 +183,8 @@ function MetricCard({ label, value }: { label: string; value: string }) {
       <div
         style={{
           color: "#34d399",
-          fontSize: 38,
-          fontWeight: 800,
+          fontSize: 36,
+          fontWeight: 700,
           fontFamily: "monospace",
         }}
       >
