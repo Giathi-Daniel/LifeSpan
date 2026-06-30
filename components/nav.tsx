@@ -127,20 +127,19 @@ export function Nav() {
           </div>
         </nav>
 
-        {/* Mobile Menu Drawer */}
         <div 
           ref={menuRef}
-          className={`fixed top-[72px] right-0 h-[calc(100vh-72px)] w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-40 md:hidden
+          className={`fixed top-[72px] right-0 w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-40 md:hidden
             ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         >
-          <div className="flex flex-col h-full pt-8 px-6">
-            <div className="flex flex-col gap-6">
+          <div className="flex flex-col pt-8 px-6 min-w-[16rem]">
+            <div className="flex flex-col gap-4">
               {navLinks.map(({ label, href }) => (
                 <Link
                   key={href}
                   href={href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`text-lg font-medium transition-colors ${
+                  className={`text-lg font-medium transition-colors py-2 ${
                     pathname === href
                       ? "text-indigo-600 dark:text-indigo-400"
                       : "text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white"
@@ -150,6 +149,13 @@ export function Nav() {
                 </Link>
               ))}
             </div>
+            
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-6 w-full py-3 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              Close Menu
+            </button>
           </div>
         </div>
       </header>
