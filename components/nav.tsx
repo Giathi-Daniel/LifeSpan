@@ -32,14 +32,23 @@ export function Nav() {
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.height = "100vh";
     } else {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
     };
   }, [mobileMenuOpen]);
-
+  
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node;
@@ -63,7 +72,7 @@ export function Nav() {
 
   return (
     <>
-      <div className="overflow-x-hidden w-full">
+      <div className="overflow-x-hidden w-full min-h-screen">
         <header ref={headerRef} className="sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-slate-950/80 border-b border-gray-200 dark:border-slate-800">
           <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
             {/* Logo */}
@@ -78,6 +87,7 @@ export function Nav() {
               <span className="text-2xl font-bold text-gray-900 dark:text-white">LifeSpan</span>
             </Link>
 
+            {/* Right Side */}
             <div className="flex items-center gap-6">
               
               {/* Desktop Links */}
@@ -117,7 +127,7 @@ export function Nav() {
                 </button>
               )}
 
-              {/* Hamburger Menu Button */}
+              {/* Hamburger Button */}
               <button
                 className="md:hidden flex items-center justify-center w-10 h-10 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors z-50 relative"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -138,15 +148,11 @@ export function Nav() {
               </button>
             </div>
           </nav>
-
+          
           <div 
             ref={menuRef}
             className={`fixed top-[72px] right-0 w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-40 md:hidden
               ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
-            style={{ 
-              visibility: mobileMenuOpen ? 'visible' : 'hidden',
-              position: 'fixed'
-            }}
           >
             <div className="flex flex-col pt-8 px-6 min-w-[16rem]">
               <div className="flex flex-col gap-4">
