@@ -171,18 +171,19 @@ export function Nav() {
     </header>
   );
 
-  // Mobile menu 
+  // Mobile menu
   const mobileMenu = mounted && createPortal(
     <div
       ref={menuRef}
       className="fixed right-0 w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-[100]"
       style={{
         top: `${headerHeight}px`,
-        height: `calc(100vh - ${headerHeight}px)`,
+        maxHeight: `calc(100vh - ${headerHeight}px)`,
+        overflowY: "auto",
         transform: mobileMenuOpen ? "translateX(0)" : "translateX(100%)",
       }}
     >
-      <div className="flex flex-col pt-8 px-6 h-full overflow-y-auto">
+      <div className="flex flex-col pt-8 px-6 pb-6">
         <div className="flex flex-col gap-4">
           {navLinks.map(({ label, href }) => (
             <Link
@@ -205,11 +206,9 @@ export function Nav() {
   );
 
   return (
-    <>
-      <div className="overflow-x-hidden w-full">
-        {header}
-        {mobileMenu}
-      </div>
-    </>
+    <div className="overflow-x-hidden w-full">
+      {header}
+      {mobileMenu}
+    </div>
   );
 }
