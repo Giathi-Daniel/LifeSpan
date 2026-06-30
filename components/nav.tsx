@@ -17,7 +17,8 @@ export function Nav() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const [headerHeight, setHeaderHeight] = useState(72); 
+
   const headerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +29,28 @@ export function Nav() {
   function toggleTheme() {
     setTheme(isDark ? "light" : "dark");
   }
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.clientHeight);
+      }
+    };
+
+    updateHeight();
+
+    const resizeObserver = new ResizeObserver(updateHeight);
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    window.addEventListener("resize", updateHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, []);
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -48,14 +71,13 @@ export function Nav() {
       document.body.style.height = "";
     };
   }, [mobileMenuOpen]);
-  
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node;
-      
       if (
-        mobileMenuOpen && 
-        headerRef.current && 
+        mobileMenuOpen &&
+        headerRef.current &&
         menuRef.current &&
         !headerRef.current.contains(target) &&
         !menuRef.current.contains(target)
@@ -72,24 +94,28 @@ export function Nav() {
 
   return (
     <>
-      <div className="overflow-x-hidden w-full min-h-screen">
-        <header ref={headerRef} className="sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-slate-950/80 border-b border-gray-200 dark:border-slate-800">
+      <div className="overflow-x-hidden w-full">
+        <header
+          ref={headerRef}
+          className="sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-slate-950/80 border-b border-gray-200 dark:border-slate-800"
+        >
           <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
             {/* Logo */}
-            <Link 
-              href="/" 
-              className="flex items-center gap-3" 
+            <Link
+              href="/"
+              className="flex items-center gap-3"
               onClick={() => setMobileMenuOpen(false)}
             >
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                 <span className="text-white font-bold text-lg">L</span>
               </div>
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">LifeSpan</span>
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                LifeSpan
+              </span>
             </Link>
 
             {/* Right Side */}
             <div className="flex items-center gap-6">
-              
               {/* Desktop Links */}
               <div className="hidden md:flex items-center gap-8">
                 {navLinks.map(({ label, href }) => (
@@ -148,13 +174,18 @@ export function Nav() {
               </button>
             </div>
           </nav>
-          
-          <div 
+
+          {/* Mobile Menu */}
+          <div
             ref={menuRef}
-            className={`fixed top-[72px] right-0 w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-40 md:hidden
-              ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+            className="fixed right-0 w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-40 md:hidden"
+            style={{
+              top: `${headerHeight}px`,
+              height: `calc(100vh - ${headerHeight}px)`,
+              transform: mobileMenuOpen ? "translateX(0)" : "translateX(100%)",
+            }}
           >
-            <div className="flex flex-col pt-8 px-6 min-w-[16rem]">
+            <div className="flex flex-col pt-8 px-6 h-full overflow-y-auto">
               <div className="flex flex-col gap-4">
                 {navLinks.map(({ label, href }) => (
                   <Link
