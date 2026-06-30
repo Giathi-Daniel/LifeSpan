@@ -18,7 +18,6 @@ export function Nav() {
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
-  // Refs to handle outside clicks
   const headerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -53,14 +52,6 @@ export function Nav() {
 
   return (
     <>
-      {/* Backdrop Overlay */}
-      {mobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300"
-          aria-hidden="true"
-        />
-      )}
-
       <header ref={headerRef} className="sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-slate-950/80 border-b border-gray-200 dark:border-slate-800">
         <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
           {/* Logo */}
@@ -139,10 +130,10 @@ export function Nav() {
         {/* Mobile Menu Drawer */}
         <div 
           ref={menuRef}
-          className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-50 md:hidden
+          className={`fixed top-[72px] right-0 h-[calc(100vh-72px)] w-64 bg-white dark:bg-slate-950 border-l border-gray-200 dark:border-slate-800 shadow-xl transform transition-transform duration-300 ease-in-out z-40 md:hidden
             ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         >
-          <div className="flex flex-col h-full pt-20 px-6">
+          <div className="flex flex-col h-full pt-8 px-6">
             <div className="flex flex-col gap-6">
               {navLinks.map(({ label, href }) => (
                 <Link
@@ -159,13 +150,6 @@ export function Nav() {
                 </Link>
               ))}
             </div>
-            
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="mt-auto mb-8 w-full py-3 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-            >
-              Close Menu
-            </button>
           </div>
         </div>
       </header>
