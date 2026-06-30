@@ -149,13 +149,6 @@ export function Nav() {
                 </Link>
               ))}
             </div>
-            
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="mt-6 w-full py-3 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-200 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
-            >
-              Close Menu
-            </button>
           </div>
         </div>
       </header>
