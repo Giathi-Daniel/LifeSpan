@@ -16,6 +16,7 @@ export function Nav() {
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -28,14 +29,18 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-slate-950/80 border-b border-gray-200 dark:border-slate-800">
       <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-3">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
             <span className="text-white font-bold text-lg">L</span>
           </div>
           <span className="text-2xl font-bold text-gray-900 dark:text-white">LifeSpan</span>
         </Link>
 
+        {/* Right Side: Desktop Links + Theme Toggle + Hamburger */}
         <div className="flex items-center gap-6">
+          
+          {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map(({ label, href }) => (
               <Link
@@ -52,7 +57,7 @@ export function Nav() {
             ))}
           </div>
 
-          {/* Theme toggle — rendered only after mount to avoid SSR/client mismatch */}
+          {/* Theme Toggle */}
           {mounted && (
             <button
               onClick={toggleTheme}
@@ -72,13 +77,38 @@ export function Nav() {
             </button>
           )}
 
-          {/* Mobile nav links */}
-          <div className="flex md:hidden items-center gap-3">
+          {/* Hamburger Menu Button (Mobile Only) */}
+          <button
+            className="md:hidden flex items-center justify-center w-10 h-10 text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+          <div className="px-6 py-4 flex flex-col gap-4">
             {navLinks.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className={`text-sm font-medium transition-colors ${
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block py-2 font-medium transition-colors ${
                   pathname === href
                     ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white"
@@ -89,7 +119,7 @@ export function Nav() {
             ))}
           </div>
         </div>
-      </nav>
+      )}
     </header>
   );
 }
